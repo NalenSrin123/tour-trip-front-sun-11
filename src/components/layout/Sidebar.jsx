@@ -16,6 +16,7 @@ import {
   HelpCircle,
   User,
   LogOut,
+  Goal,
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -36,16 +37,16 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 flex flex-col h-screen sticky top-0">
+    <aside className="w-64 bg-white border-r border-gray-200 flex flex-col h-full shrink-0">
       {/* Logo & Brand */}
       <div className="p-6 flex items-center space-x-3 border-b border-gray-100">
         <div className="bg-blue-600 text-white p-2 rounded-lg">
-          <Map className="w-6 h-6" />
+          <Goal className="w-6 h-6" />
         </div>
         <div>
-          <h1 className="font-bold text-lg text-blue-600 leading-tight">
+          <h3 className="font-bold text-lg text-blue-600 leading-tight">
             TourBook
-          </h1>
+          </h3>
           <span className="text-xs text-gray-400 font-medium">
             Admin Console
           </span>
