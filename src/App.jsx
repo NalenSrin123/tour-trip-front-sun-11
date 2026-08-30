@@ -6,7 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import AdminLayout from "./components/layout/AdminLayout";
-
+import ScheduleManagement from "./pages/ScheduleManagement";
 function App() {
   return (
     <Router>
@@ -95,7 +95,9 @@ function App() {
             element={
               <div className="text-xl font-bold">Profile Page Content</div>
             }
+            
           />
+          <Route path="/schedules" element={<ScheduleManagement />} />
         </Route>
       </Routes>
     </Router>

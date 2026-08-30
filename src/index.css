@@ -124,3 +124,24 @@ code {
   background: var(--code-bg);
 }
 
+
+@theme {
+  --color-darkplum: #2c0a22;
+  --color-electriccyan: #00aeef;
+  --color-tealcyan: #03a9b5;
+  --color-darkteal: #028893;
+  --color-bgwarm: #faf8f5;
+  --color-bgwarmSec: #faf4ee;
+  --color-bgcard: #f7f8fa;
+  --color-peach1: #fadecb;
+  --color-peach2: #f2c4a7;
+  --color-peach3: #fceee3;
+  --color-peach4: #fff0e6;
+  --color-textBody: #475569;
+  --color-textSec: #64748b;
+  --color-textMuted: #6e7378;
+  --color-borderDefault: #e2e8f0;
+  --color-borderWarm: #efe7e1;
+  --color-ratingYellow: #ffb800;
+}
+
