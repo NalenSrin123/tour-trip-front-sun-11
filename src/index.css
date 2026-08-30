@@ -1,9 +1,5 @@
-@import "tailwindcss";
-/* 
-@tailwind base;
-@tailwind components;
-@tailwind utilities; */
 
+@import "tailwindcss";
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -127,3 +123,5 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+@import '@fortawesome/fontawesome-free/css/all.min.css';
