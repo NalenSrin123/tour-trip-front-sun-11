@@ -1,64 +1,26 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Star, ArrowRight } from "lucide-react";
-
-const tours = [
-  {
-    loc: "Siem Reap, Cambodia",
-    title: "Angkor Wat Sunrise Adventure & Ancient Temples",
-    rating: "4.9",
-    reviews: "328",
-    days: "2 Days",
-    price: "$89",
-  },
-  {
-    loc: "Ha Long, Vietnam",
-    title: "Luxury Ha Long Bay Cruise & Kayaking Discovery",
-    rating: "4.85",
-    reviews: "210",
-    days: "3 Days",
-    price: "$240",
-  },
-  {
-    loc: "Kyoto, Japan",
-    title: "Classic Kyoto Temples & Mount Fuji Scenic Tour",
-    rating: "4.96",
-    reviews: "412",
-    days: "5 Days",
-    price: "$680",
-  },
-];
-
-const destinations = [
-  { name: "Cambodia", count: "42 Unforgettable Tours" },
-  { name: "Singapore", count: "68 Island Experiences" },
-  { name: "Japan", count: "54 Heritage Trips" },
-  { name: "Vietnam", count: "38 Cultural Circuits" },
-];
-
-const features = [
-  {
-    title: "Guaranteed Best Price",
-    desc: "Direct local partnerships with no hidden fees.",
-  },
-  {
-    title: "Certified Local Experts",
-    desc: "Passionate local storytellers and guides.",
-  },
-  {
-    title: "24/7 Concierge Support",
-    desc: "Always available before, during, and after trips.",
-  },
-  {
-    title: "Flexible Cancellations",
-    desc: "Free cancellations up to 48 hours prior.",
-  },
-];
+import { TOURS, DESTINATIONS, FEATURES } from "../data/mockData";
+import TourCard from "../components/TourCard";
+import SearchForm from "../components/SearchForm";
 
 export default function Home() {
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    if (email) {
+      setSubscribed(true);
+      setEmail("");
+    }
+  };
+
   return (
-    <div className="bg-bgwarm">
+    <div className="bg-bgwarm min-h-screen">
       {/* Hero */}
-      <section className="bg-darkplum py-24 px-6 flex flex-col items-center text-center">
+      <section className="bg-darkplum py-24 px-6 flex flex-col items-center text-center relative overflow-hidden">
         <span className="inline-block bg-white/10 border border-white/20 text-peach1 text-[11px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">
           Explore 500+ Handpicked Journeys
         </span>
@@ -70,15 +32,7 @@ export default function Home() {
           create memories that last a lifetime with certified local experts.
         </p>
 
-        {/* Floating search box */}
-        <div className="mt-10 bg-white rounded-3xl shadow-2xl shadow-black/20 p-4 w-full max-w-4xl flex flex-col md:flex-row gap-3 md:gap-4 items-stretch">
-          <SearchField label="Destination" value="Where do you want to go?" />
-          <SearchField label="Travel Date" value="Select date" />
-          <SearchField label="Guests" value="2 Travelers (Standard)" />
-          <button className="bg-electriccyan hover:bg-darkteal text-white font-bold rounded-2xl px-8 py-4 text-sm transition whitespace-nowrap">
-            Search Tours
-          </button>
-        </div>
+        <SearchForm />
       </section>
 
       {/* Popular Tours */}
@@ -98,15 +52,16 @@ export default function Home() {
           </div>
           <Link
             to="/tours"
-            className="text-electriccyan font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all"
+            className="text-electriccyan font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all group"
           >
-            View All 124 Tours <ArrowRight className="w-4 h-4" />
+            View All 124 Tours{" "}
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {tours.map((tour) => (
-            <TourCard key={tour.title} tour={tour} />
+          {TOURS.slice(0, 3).map((tour) => (
+            <TourCard key={tour.id} tour={tour} />
           ))}
         </div>
       </section>
@@ -126,14 +81,27 @@ export default function Home() {
           </p>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-10 w-full">
-            {destinations.map((d) => (
-              <div
-                key={d.name}
-                className="bg-darkplum rounded-3xl h-64 flex flex-col justify-end p-6 hover:-translate-y-1 transition-transform cursor-pointer"
+            {DESTINATIONS.map((d) => (
+              <Link
+                key={d.id}
+                to={`/tours?destination=${encodeURIComponent(d.name)}`}
+                className="group relative bg-darkplum rounded-3xl h-64 overflow-hidden flex flex-col justify-end p-6 hover:-translate-y-1 transition-all cursor-pointer shadow-md"
               >
-                <span className="text-white font-bold text-xl">{d.name}</span>
-                <span className="text-peach1 text-xs mt-1">{d.count}</span>
-              </div>
+                <img
+                  src={d.image}
+                  alt={d.name}
+                  className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-darkplum via-darkplum/20 to-transparent" />
+                <div className="relative z-10 text-left">
+                  <span className="text-white font-bold text-xl block">
+                    {d.name}
+                  </span>
+                  <span className="text-peach1 text-xs mt-1 block font-medium">
+                    {d.count}
+                  </span>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -155,25 +123,38 @@ export default function Home() {
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
-            {features.map((f) => (
-              <div key={f.title} className="flex items-start gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-peach3 flex-shrink-0" />
-                <div>
-                  <h3 className="text-darkplum font-bold text-sm">{f.title}</h3>
-                  <p className="text-textSec text-xs mt-1">{f.desc}</p>
+            {FEATURES.map((f) => {
+              const Icon = f.icon;
+              return (
+                <div key={f.title} className="flex items-start gap-3">
+                  <div className="w-11 h-11 rounded-2xl bg-peach3/30 flex items-center justify-center flex-shrink-0 text-darkplum">
+                    <Icon className="w-5 h-5 text-electriccyan" />
+                  </div>
+                  <div>
+                    <h3 className="text-darkplum font-bold text-sm">
+                      {f.title}
+                    </h3>
+                    <p className="text-textSec text-xs mt-1">{f.desc}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
         <div className="flex-1 w-full relative">
-          <div className="bg-peach4 rounded-3xl aspect-square w-full" />
-          <div className="absolute bottom-6 left-6 bg-white rounded-2xl shadow-xl p-5 max-w-xs">
+          <div className="rounded-3xl overflow-hidden aspect-square w-full shadow-lg">
+            <img
+              src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80"
+              alt="Travelers exploring"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl p-5 max-w-xs border border-white/20">
             <div className="flex items-center gap-1 text-ratingYellow font-bold text-xs">
               <Star className="w-3.5 h-3.5 fill-current" /> 4.9/5 Overall
             </div>
-            <p className="text-textBody text-xs mt-2">
+            <p className="text-textBody text-xs mt-2 italic">
               "TravelEase made our Cambodia honeymoon absolute magic. Flawless
               booking!"
             </p>
@@ -186,7 +167,7 @@ export default function Home() {
 
       {/* Newsletter */}
       <section className="max-w-7xl mx-auto px-6 pb-20">
-        <div className="bg-darkplum rounded-[32px] py-16 px-6 flex flex-col items-center text-center">
+        <div className="bg-darkplum rounded-[32px] py-16 px-6 flex flex-col items-center text-center relative overflow-hidden">
           <span className="text-peach1 text-[11px] font-bold uppercase tracking-widest">
             Stay Inspired
           </span>
@@ -197,61 +178,34 @@ export default function Home() {
             Subscribe to our weekly newsletter for exclusive early-bird deals
             and curated itineraries.
           </p>
-          <div className="mt-6 flex flex-col sm:flex-row gap-3 w-full max-w-md">
-            <input
-              type="email"
-              placeholder="Enter your email address"
-              className="flex-1 bg-white/10 border border-white/20 rounded-2xl px-5 py-3.5 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-electriccyan"
-            />
-            <button className="bg-electriccyan hover:bg-darkteal text-white font-bold rounded-2xl px-6 py-3.5 text-sm transition">
-              Subscribe Now
-            </button>
-          </div>
+
+          {subscribed ? (
+            <div className="mt-6 bg-white/10 border border-white/20 text-white rounded-2xl px-6 py-4 text-sm font-semibold max-w-md w-full">
+              🎉 Thanks for subscribing! Check your inbox soon.
+            </div>
+          ) : (
+            <form
+              onSubmit={handleNewsletterSubmit}
+              className="mt-6 flex flex-col sm:flex-row gap-3 w-full max-w-md"
+            >
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email address"
+                className="flex-1 bg-white/10 border border-white/20 rounded-2xl px-5 py-3.5 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-electriccyan transition"
+              />
+              <button
+                type="submit"
+                className="bg-electriccyan hover:bg-darkteal text-white font-bold rounded-2xl px-6 py-3.5 text-sm transition cursor-pointer"
+              >
+                Subscribe Now
+              </button>
+            </form>
+          )}
         </div>
       </section>
-    </div>
-  );
-}
-
-function SearchField({ label, value }) {
-  return (
-    <div className="flex-1 bg-bgcard rounded-2xl px-4 py-2.5 text-left">
-      <label className="block text-[10px] font-bold uppercase text-textMuted">
-        {label}
-      </label>
-      <span className="text-sm font-semibold text-darkplum">{value}</span>
-    </div>
-  );
-}
-
-function TourCard({ tour }) {
-  return (
-    <div className="bg-white rounded-3xl border border-borderWarm shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
-      <div className="h-48 bg-peach3" />
-      <div className="p-6">
-        <div className="flex items-center gap-2 text-xs">
-          <span className="flex items-center gap-1 text-ratingYellow font-bold">
-            <Star className="w-3.5 h-3.5 fill-current" /> {tour.rating}
-          </span>
-          <span className="text-textMuted">
-            ({tour.reviews} Reviews) • {tour.days}
-          </span>
-        </div>
-        <h3 className="text-darkplum font-bold text-base mt-3 leading-snug">
-          {tour.title}
-        </h3>
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-borderDefault">
-          <div>
-            <span className="block text-[10px] text-textMuted">From</span>
-            <span className="text-darkplum font-black text-xl">
-              {tour.price} / person
-            </span>
-          </div>
-          <button className="bg-bgwarm text-darkplum font-bold text-[11px] px-4 py-2 rounded-xl hover:bg-peach3 transition">
-            View Details
-          </button>
-        </div>
-      </div>
     </div>
   );
 }
