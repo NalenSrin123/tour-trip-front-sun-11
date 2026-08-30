@@ -11,7 +11,7 @@ const Forgot = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center  bg-cover bg-center p-4" >
+    <div className="min-h-screen flex flex-col items-center justify-center  bg-cover bg-center p-4  bg-slate-200 " >
       
       {/* Card Form */}
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center text-center">

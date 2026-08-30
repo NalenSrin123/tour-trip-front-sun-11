@@ -34,9 +34,7 @@ const VerifyCode = () => {
 
   return (
     <div 
-      className="min-h-screen flex items-center justify-center bg-cover bg-center p-4 relative"
-      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1000')" }}
-    >
+      className="min-h-screen flex items-center justify-center bg-cover bg-center p-4 relative bg-slate-200  ">
       {/* Overlay ពណ៌សស្រាលពីលើ Background */}
       <div className="absolute inset-0 bg-white/20 backdrop-blur-[2px]"></div>
 

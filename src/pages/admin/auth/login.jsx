@@ -43,15 +43,9 @@ export default function Login() {
                 <i class="fa-regular fa-envelope"></i>
               </span>
 
-              <input
-                type="email"
-                placeholder="explorer@example.com"
-                className="
-                  w-full
-                  h-11
-                  rounded-md
-                  bg-white
-                  border border-gray-200
+              <input type="email" placeholder="explorer@example.com"
+                className="w-full h-11 rounded-md  bg-white
+                border border-gray-200
                   pl-10
                   pr-3
                   text-sm

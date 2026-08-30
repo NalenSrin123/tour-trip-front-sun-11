@@ -1,26 +1,17 @@
-<<<<<<< HEAD
 import React from 'react';
 import Forgot from './pages/admin/auth/Forgot';
 import VerifyCode from './pages/admin/auth/VerifyCode';
-=======
-
-function App() {
->>>>>>> e18385cbf38806269a14fa43a5d7b475a1245ce3
-
+import Login from './pages/admin/auth/login';
+import Register from './pages/admin/auth/Register';
 const App = () => {
   return (
-<<<<<<< HEAD
     <div>
+      <Login/>
+      <Register/>
       <Forgot/>
       <VerifyCode/>
     </div>
   );
-=======
-    <>
-
-    </>
-  )
->>>>>>> e18385cbf38806269a14fa43a5d7b475a1245ce3
 }
 
 export default App;
