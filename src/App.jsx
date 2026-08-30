@@ -97,7 +97,7 @@ function App() {
             }
             
           />
-          <Route path="/schedules" element={<ScheduleManagement />} />
+          <Route path="schedules" element={<ScheduleManagement />} />
         </Route>
       </Routes>
     </Router>
