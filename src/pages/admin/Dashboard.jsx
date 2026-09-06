@@ -12,7 +12,7 @@ import {
     DollarSign,
 } from "lucide-react";
 
-import "../../components/admin/Admin.css";
+import "../../assets/styles/Admin.css"
 
 function Dashboard() {
     return (
