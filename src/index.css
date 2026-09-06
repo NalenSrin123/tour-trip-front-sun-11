@@ -1,3 +1,5 @@
+
+@import "tailwindcss";
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -11,8 +13,8 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -52,9 +54,21 @@
 
 body {
   margin: 0;
+  padding: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    sans-serif;
+  background-color: #f9fafb;
 }
 
-#root {
+/* #root {
   width: 1126px;
   max-width: 100%;
   margin: 0 auto;
@@ -64,7 +78,7 @@ body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-}
+} */
 
 h1,
 h2 {
@@ -109,3 +123,25 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+
+@theme {
+  --color-darkplum: #2c0a22;
+  --color-electriccyan: #00aeef;
+  --color-tealcyan: #03a9b5;
+  --color-darkteal: #028893;
+  --color-bgwarm: #faf8f5;
+  --color-bgwarmSec: #faf4ee;
+  --color-bgcard: #f7f8fa;
+  --color-peach1: #fadecb;
+  --color-peach2: #f2c4a7;
+  --color-peach3: #fceee3;
+  --color-peach4: #fff0e6;
+  --color-textBody: #475569;
+  --color-textSec: #64748b;
+  --color-textMuted: #6e7378;
+  --color-borderDefault: #e2e8f0;
+  --color-borderWarm: #efe7e1;
+  --color-ratingYellow: #ffb800;
+}
+
