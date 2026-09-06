@@ -10,6 +10,8 @@ import ScheduleManagement from "./pages/ScheduleManagement";
 import CustomersPage from "./pages/admin/customers";
 import AddCustomer from "./pages/admin/customers/AddCustomer";
 
+import Listbooking from "./pages/admin/bookings/Listbooking";
+import Greatebooking from "./pages/admin/bookings/Greatebooking";
 function App() {
   return (
     <Router>
@@ -56,8 +58,16 @@ function App() {
           <Route
             path="bookings"
             element={
-              <div className="text-xl font-bold">Bookings Page Content</div>
+              <Listbooking/>
             }
+            
+          />
+          <Route
+             path="bookings/Greatebooking"
+            element={<Greatebooking />}
+            
+            
+            
           />
           <Route
             path="customers"
@@ -104,6 +114,7 @@ function App() {
             
           />
           <Route path="schedules" element={<ScheduleManagement />} />
+          
         </Route>
       </Routes>
     </Router>
