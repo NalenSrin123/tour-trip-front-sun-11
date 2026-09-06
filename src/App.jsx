@@ -7,6 +7,9 @@ import {
 } from "react-router-dom";
 import AdminLayout from "./components/layout/AdminLayout";
 import ScheduleManagement from "./pages/ScheduleManagement";
+import CustomersPage from "./pages/admin/customers";
+import AddCustomer from "./pages/admin/customers/AddCustomer";
+
 function App() {
   return (
     <Router>
@@ -58,10 +61,13 @@ function App() {
           />
           <Route
             path="customers"
-            element={
-              <div className="text-xl font-bold">Customers Page Content</div>
-            }
+              element={<CustomersPage/>}
           />
+          <Route
+            path="customers/add"
+              element={<AddCustomer/>}
+          />
+          
           <Route
             path="reviews"
             element={
