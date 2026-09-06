@@ -12,6 +12,9 @@ import AddCustomer from "./pages/admin/customers/AddCustomer";
 
 import Listbooking from "./pages/admin/bookings/Listbooking";
 import Greatebooking from "./pages/admin/bookings/Greatebooking";
+import Dashboard from "./pages/admin/Dashboard";
+import Categories from "./pages/admin/categories/Categories";
+
 function App() {
   return (
     <Router>
@@ -22,7 +25,7 @@ function App() {
           <Route
             path="dashboard"
             element={
-              <div className="text-xl font-bold">Dashboard Content មកទីនេះ</div>
+              <Dashboard/>
             }
           />
           <Route
@@ -34,7 +37,7 @@ function App() {
           <Route
             path="categories"
             element={
-              <div className="text-xl font-bold">Categories Page Content</div>
+              <Categories/>
             }
           />
           <Route

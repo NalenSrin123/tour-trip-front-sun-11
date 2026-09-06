@@ -35,10 +35,9 @@ const Topbar = () => {
             <span className="text-sm">AP</span>
           </div>
           <div className="hidden md:block text-left">
-            <h4 className="text-sm font-semibold text-gray-800 leading-tight">
+            <h4 className="text-[14px] font-semibold text-gray-800 leading-tight">
               Admin Profile
             </h4>
-            <span className="text-xs text-gray-400">admin@tourbook.com</span>
           </div>
         </div>
       </div>
