@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import AdminLayout from "./components/layout/AdminLayout";
 import ScheduleManagement from "./pages/ScheduleManagement";
+import Listbooking from "./pages/admin/bookings/Listbooking";
+import Greatebooking from "./pages/admin/bookings/Greatebooking";
 function App() {
   return (
     <Router>
@@ -53,8 +55,16 @@ function App() {
           <Route
             path="bookings"
             element={
-              <div className="text-xl font-bold">Bookings Page Content</div>
+              <Listbooking/>
             }
+            
+          />
+          <Route
+             path="bookings/Greatebooking"
+            element={<Greatebooking />}
+            
+            
+            
           />
           <Route
             path="customers"
@@ -98,6 +108,7 @@ function App() {
             
           />
           <Route path="schedules" element={<ScheduleManagement />} />
+          
         </Route>
       </Routes>
     </Router>
