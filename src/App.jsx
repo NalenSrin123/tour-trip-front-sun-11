@@ -9,6 +9,8 @@ import AdminLayout from "./components/layout/AdminLayout";
 import ScheduleManagement from "./pages/ScheduleManagement";
 import CustomersPage from "./pages/admin/customers";
 import AddCustomer from "./pages/admin/customers/AddCustomer";
+import ToursPage from "./pages/admin/tours";
+import CreateTour from "./pages/admin/tours";
 
 import Listbooking from "./pages/admin/bookings/Listbooking";
 import Greatebooking from "./pages/admin/bookings/Greatebooking";
@@ -28,11 +30,13 @@ function App() {
               <Dashboard/>
             }
           />
-          <Route
+         <Route
             path="tours"
-            element={
-              <div className="text-xl font-bold">Tours Page Content</div>
-            }
+            element={<ToursPage />}
+          />
+          <Route
+            path="tours/create"
+            element={<CreateTour />}
           />
           <Route
             path="categories"

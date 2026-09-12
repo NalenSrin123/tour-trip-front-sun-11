@@ -92,9 +92,9 @@ export default function CustomersPage() {
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Manage Customers</h1>
-          <p className="text-sm text-gray-500 mt-1">
+        <div className="dashboard-header">
+          <h1>Manage Customers</h1>
+          <p>
             View and manage user accounts, booking history, and status.
           </p>
         </div>
