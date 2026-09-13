@@ -14,6 +14,7 @@ import Listbooking from "./pages/admin/bookings/Listbooking";
 import Greatebooking from "./pages/admin/bookings/Greatebooking";
 import Dashboard from "./pages/admin/Dashboard";
 import Categories from "./pages/admin/categories/Categories";
+import DestinationsPage from "./pages/admin/destinations/DestinationsPage";
 
 function App() {
   return (
@@ -42,20 +43,12 @@ function App() {
           />
           <Route
             path="destinations"
-            element={
-              <div className="text-xl font-bold">Destinations Page Content</div>
-            }
+            element={<DestinationsPage />}
           />
           <Route
             path="guides"
             element={
               <div className="text-xl font-bold">Guides Page Content</div>
-            }
-          />
-          <Route
-            path="schedules"
-            element={
-              <div className="text-xl font-bold">Schedules Page Content</div>
             }
           />
           <Route

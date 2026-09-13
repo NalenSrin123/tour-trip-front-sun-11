@@ -1,6 +1,4 @@
 import React, { useState, useMemo, useEffect } from "react";
-import Sidebar from "../components/layout/Sidebar";
-import Header from "../components/layout/Header";
 import ScheduleFilterBar from "../components/schedule/ScheduleFilterBar";
 import ScheduleTableRow from "../components/schedule/ScheduleTableRow";
 import SchedulePagination from "../components/schedule/SchedulePagination";
@@ -97,13 +95,8 @@ export default function ScheduleManagement() {
   const editingEntry = schedules.find((row) => row.id === editingId) || null;
 
   return (
-    <div className="flex min-h-screen bg-gray-50 font-sans text-gray-800">
-      <Sidebar />
-
-      <div className="flex-1 flex flex-col min-w-0">
-        <Header />
-
-        <main className="p-8 max-w-7xl w-full mx-auto space-y-6">
+    <>
+      <main className="max-w-7xl w-full mx-auto space-y-6 font-sans text-gray-800">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
@@ -176,8 +169,7 @@ export default function ScheduleManagement() {
               onPageChange={setCurrentPage}
             />
           </div>
-        </main>
-      </div>
+      </main>
 
       {modalOpen && (
         <ScheduleFormModal
@@ -186,6 +178,6 @@ export default function ScheduleManagement() {
           onSave={handleSave}
         />
       )}
-    </div>
+    </>
   );
 }

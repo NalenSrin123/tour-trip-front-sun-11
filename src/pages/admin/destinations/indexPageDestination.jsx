@@ -3,6 +3,7 @@ import { destinationService } from '../../../services/destinationService';
 
 export default function DestinationDashboard({ onAddClick, onEditClick, onViewClick }) {
     const [activeFilter, setActiveFilter] = useState('All');
+    const [searchTerm, setSearchTerm] = useState('');
     const [destinations, setDestinations] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -35,8 +36,14 @@ export default function DestinationDashboard({ onAddClick, onEditClick, onViewCl
     };
 
     const filteredDestinations = destinations.filter((dest) => {
-        if (activeFilter === 'All') return true;
-        return dest.status.toLowerCase() === activeFilter.toLowerCase();
+        const matchesFilter = activeFilter === 'All' ||
+            dest.status.toLowerCase() === activeFilter.toLowerCase();
+        const query = searchTerm.trim().toLowerCase();
+        const matchesSearch = !query ||
+            dest.name.toLowerCase().includes(query) ||
+            dest.country.toLowerCase().includes(query);
+
+        return matchesFilter && matchesSearch;
     });
 
     return (
@@ -70,6 +77,8 @@ export default function DestinationDashboard({ onAddClick, onEditClick, onViewCl
                         <input
                             type="text"
                             placeholder="Search destinations..."
+                            value={searchTerm}
+                            onChange={(event) => setSearchTerm(event.target.value)}
                             className="w-full pl-9 pr-4 py-2 bg-slate-50/50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400"
                         />
                     </div>

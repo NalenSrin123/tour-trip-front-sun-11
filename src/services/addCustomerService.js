@@ -1,19 +1,30 @@
-import { initialCustomers} from "../data/customerMockData"; // or initialCustomers
+import { initialCustomers } from "../data/customerMockData";
 
 const STORAGE_KEY = "app_customers";
+
+const getInitialCustomers = () => initialCustomers.map((customer) => ({ ...customer }));
 
 // Helper: Get data safely from localStorage or initialize with mock data
 const getStoredCustomers = () => {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
     if (!data) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(customerMockData || []));
-      return customerMockData || [];
+      const customers = getInitialCustomers();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(customers));
+      return customers;
     }
-    return JSON.parse(data);
+
+    const customers = JSON.parse(data);
+    if (Array.isArray(customers)) {
+      return customers;
+    }
+
+    const fallbackCustomers = getInitialCustomers();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(fallbackCustomers));
+    return fallbackCustomers;
   } catch (error) {
     console.error("Error reading localStorage:", error);
-    return customerMockData || [];
+    return getInitialCustomers();
   }
 };
 
@@ -40,7 +51,7 @@ export const createCustomer = async (customerData) => {
     status: customerData.status || "Active",
     avatar: "",
     bookings: 0,
-    totalSpent: "$0.00",
+    totalSpent: 0,
     joined: new Date().toLocaleDateString("en-US", {
       month: "short",
       day: "2-digit",
