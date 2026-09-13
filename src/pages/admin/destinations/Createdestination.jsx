@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Upload, MapPin, Globe, CheckCircle2 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { destinationService } from '../../../services/destinationService';
 
-const Createdestination = () => {
+const Createdestination = ({ initialData, onCancel }) => {
   const navigate = useNavigate();
+  const returnToList = () => onCancel ? onCancel() : navigate('/admin/destinations');
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     country: 'Cambodia',
     status: 'Active',
     description: '',
     image: null,
+    ...initialData,
   });
 
-  const [previewUrl, setPreviewUrl] = useState('');
+  const [previewUrl, setPreviewUrl] = useState(initialData?.image || '');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,25 +32,39 @@ const Createdestination = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted Data:', formData);
-    // ត្រឡប់ទៅទំព័រ Destinations វិញបន្ទាប់ពី Submit
-    navigate('/destinations');
+    setIsSaving(true);
+    setError('');
+    try {
+      const data = { ...formData, image: previewUrl };
+      if (initialData) {
+        await destinationService.updateDestination(initialData.id, data);
+      } else {
+        await destinationService.createDestination(data);
+      }
+      returnToList();
+    } catch {
+      setError('Unable to save destination. Please try again.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
     <div className="w-full p-6 bg-slate-50 min-h-screen">
       {/* Header Bar */}
       <div className="flex items-center gap-4 mb-6">
-        <Link 
-          to="/destinations" 
+        <button
+          type="button"
+          onClick={returnToList}
+          aria-label="Back to destinations"
           className="p-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-100 transition text-slate-600"
         >
           <ArrowLeft size={18} />
-        </Link>
+        </button>
         <div>
-          <h2 className="text-2xl font-bold text-slate-900">Add New Destination</h2>
+          <h2 className="text-2xl font-bold text-slate-900">{initialData ? 'Edit Destination' : 'Add New Destination'}</h2>
           <p className="text-slate-500 text-sm">Create a new location for your travel package.</p>
         </div>
       </div>
@@ -147,17 +166,20 @@ const Createdestination = () => {
 
         {/* Action Buttons */}
         <div className="flex justify-end items-center gap-3 mt-8 pt-4 border-t border-slate-100">
-          <Link
-            to="/destinations"
+          {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+          <button
+            type="button"
+            onClick={returnToList}
             className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition"
           >
             Cancel
-          </Link>
+          </button>
           <button
             type="submit"
+            disabled={isSaving}
             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition shadow-sm"
           >
-            <CheckCircle2 size={16} /> Save Destination
+            <CheckCircle2 size={16} /> {isSaving ? 'Saving...' : 'Save Destination'}
           </button>
         </div>
       </form>

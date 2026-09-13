@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CreatePageDestination from "./CreatePageDestination";
+import CreatePageDestination from "./Createdestination";
 import DestinationDashboard from "./indexPageDestination";
 import ViewPageDestination from "./ViewPageDestination";
 
