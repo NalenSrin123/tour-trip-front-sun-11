@@ -1,16 +1,39 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { initialCustomers } from "../../../data/customerMockData";
+import { fetchCustomers } from "../../../services/addCustomerService";
 
 const ITEMS_PER_PAGE = 10;
 
 export default function CustomersPage() {
   const navigate = useNavigate();
-  const [customers, setCustomers] = useState(initialCustomers);
+  const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadCustomers = async () => {
+      try {
+        const storedCustomers = await fetchCustomers();
+        if (isMounted) {
+          setCustomers(storedCustomers);
+        }
+      } catch (error) {
+        console.error("Failed to load customers:", error);
+      }
+    };
+
+    loadCustomers();
+    window.addEventListener("customersUpdated", loadCustomers);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener("customersUpdated", loadCustomers);
+    };
+  }, []);
 
   // Search & Filter Logic
   const filteredCustomers = customers.filter((customer) => {
@@ -77,6 +100,7 @@ export default function CustomersPage() {
     a.href = url;
     a.download = "customers.csv";
     a.click();
+    window.URL.revokeObjectURL(url);
   };
 
   // Helper for rendering initials when no avatar picture is present
@@ -192,7 +216,7 @@ export default function CustomersPage() {
 
                     {/* Total Spent */}
                     <td className="py-4 px-6 font-medium text-gray-900">
-                      ${customer.totalSpent.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                      ${Number(customer.totalSpent || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
                     </td>
 
                     {/* Status Badge */}

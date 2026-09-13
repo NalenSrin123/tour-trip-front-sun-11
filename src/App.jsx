@@ -24,6 +24,7 @@ import EditGuidePage from "./pages/admin/guides/EditGuidePage";
 import EditCategoryPage from "./pages/admin/categories/EditCategoryPage";
 import AddCategoryPage from "./pages/admin/categories/AddCategoryPage";
 
+import DestinationsPage from "./pages/admin/destinations/DestinationsPage";
 
 function App() {
   return (
@@ -77,12 +78,6 @@ function App() {
           <Route path="guides/add" element={ <AddGuidePage/>}/>
           <Route path="guides/edit/:id" element={ <EditGuidePage/>}/>
 
-          <Route
-            path="schedules"
-            element={
-              <div className="text-xl font-bold">Schedules Page Content</div>
-            }
-          />
           <Route
             path="bookings"
             element={

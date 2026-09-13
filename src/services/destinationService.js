@@ -1,5 +1,3 @@
-import { apiFetch } from './api';
-
 // MOCK DATA: Temporary fallback while backend is not fully connected.
 let MOCK_DESTINATIONS = [
     {
