@@ -18,6 +18,12 @@ import Dashboard from "./pages/admin/Dashboard";
 import Categories from "./pages/admin/categories/Categories";
 import Pagedestination from "./pages/admin/destinations/Pagedestination";
 import Createdestination from "./pages/admin/destinations/Createdestination";
+import GuidesPage from "./pages/admin/guides/GuidesPage";
+import AddGuidePage from "./pages/admin/guides/AddGuidePage";
+import EditGuidePage from "./pages/admin/guides/EditGuidePage";
+import EditCategoryPage from "./pages/admin/categories/EditCategoryPage";
+import AddCategoryPage from "./pages/admin/categories/AddCategoryPage";
+
 
 function App() {
   return (
@@ -46,6 +52,11 @@ function App() {
               <Categories/>
             }
           />
+          <Route path="categories/add" element={<AddCategoryPage />} />
+          <Route path="categories/edit/:id" element={<EditCategoryPage />} />
+
+
+
           <Route
             path="destinations"
             element=
@@ -59,9 +70,13 @@ function App() {
           <Route
             path="guides"
             element={
-              <div className="text-xl font-bold">Guides Page Content</div>
+              <GuidesPage/>
             }
           />
+
+          <Route path="guides/add" element={ <AddGuidePage/>}/>
+          <Route path="guides/edit/:id" element={ <EditGuidePage/>}/>
+
           <Route
             path="schedules"
             element={
