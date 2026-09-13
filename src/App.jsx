@@ -16,6 +16,8 @@ import Listbooking from "./pages/admin/bookings/Listbooking";
 import Greatebooking from "./pages/admin/bookings/Greatebooking";
 import Dashboard from "./pages/admin/Dashboard";
 import Categories from "./pages/admin/categories/Categories";
+import Pagedestination from "./pages/admin/destinations/Pagedestination";
+import Createdestination from "./pages/admin/destinations/Createdestination";
 
 function App() {
   return (
@@ -46,9 +48,13 @@ function App() {
           />
           <Route
             path="destinations"
-            element={
-              <div className="text-xl font-bold">Destinations Page Content</div>
-            }
+            element=
+              {<Pagedestination/>}
+            
+          />
+          <Route
+            path="destinations/create"
+            element={<Createdestination />}
           />
           <Route
             path="guides"
