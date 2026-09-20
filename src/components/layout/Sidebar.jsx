@@ -1,5 +1,6 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { logout } from "../../services/authService";
 import {
   LayoutDashboard,
   Map,
@@ -20,6 +21,16 @@ import {
 } from "lucide-react";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } finally {
+      navigate("/login");
+    }
+  };
+
   //list of page that admin manage
   const menuItems = [
     { name: "Dashboard", path: "/admin/dashboard", icon: LayoutDashboard },
@@ -95,10 +106,7 @@ const Sidebar = () => {
         </NavLink>
 
         <button
-          onClick={() => {
-            //logout
-            console.log("Logging out...");
-          }}
+          onClick={handleLogout}
           className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
         >
           <LogOut className="w-5 h-5" />

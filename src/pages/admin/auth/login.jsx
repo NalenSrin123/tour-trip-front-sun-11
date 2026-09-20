@@ -1,12 +1,28 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../../services/authService";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    console.log("Login");
+    try {
+      await login(email, password);
+      navigate("/admin/dashboard");
+    } catch (err) {
+      setError(err.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,6 +45,12 @@ export default function Login() {
         {/* Form */}
         <form onSubmit={handleSubmit}>
 
+          {error && (
+            <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-600">
+              {error}
+            </div>
+          )}
+
           {/* Email */}
           <div className="mb-4">
 
@@ -45,6 +67,9 @@ export default function Login() {
 
               <input
                 type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="explorer@example.com"
                 className="
                   w-full
@@ -79,6 +104,7 @@ export default function Login() {
 
               <button
                 type="button"
+                onClick={() => navigate("/forget")}
                 className="text-[10px] text-blue-800 hover:underline"
               >
                 Forgot Password?
@@ -98,6 +124,9 @@ export default function Login() {
               {/* Password Input */}
               <input
                 type={showPassword ? "text" : "password"}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="
                   w-full
@@ -153,7 +182,7 @@ export default function Login() {
               transition
             "
           >
-            Login
+{loading ? "Logging in..." : "Login"}
           </button>
 
         </form>
@@ -245,6 +274,7 @@ export default function Login() {
 
           <button
             type="button"
+            onClick={() => navigate("/register")}
             className="ml-1 text-blue-800 font-medium hover:underline"
           >
             Sign up

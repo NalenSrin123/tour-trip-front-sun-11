@@ -11,6 +11,11 @@ import CustomersPage from "./pages/admin/customers";
 import AddCustomer from "./pages/admin/customers/AddCustomer";
 import ToursPage from "./pages/admin/tours";
 import CreateTour from "./pages/admin/tours";
+import Login from "./pages/admin/auth/login";
+import Register from "./pages/admin/auth/Register";
+import ForgetPassword from "./pages/admin/auth/Forgot";
+import VerifyCode from "./pages/admin/auth/VerifyCode";
+
 
 import Listbooking from "./pages/admin/bookings/Listbooking";
 import Greatebooking from "./pages/admin/bookings/Greatebooking";
@@ -137,7 +142,15 @@ function App() {
           />
           <Route path="schedules" element={<ScheduleManagement />} />
           
+
         </Route>
+
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
+        <Route path="/forget" element={<ForgetPassword/>}/>
+        <Route path="/verify" element={<VerifyCode/>}/>
+
+        
       </Routes>
     </Router>
   );

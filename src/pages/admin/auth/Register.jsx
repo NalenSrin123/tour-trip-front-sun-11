@@ -1,12 +1,49 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { register } from "../../../services/authService";
 
 export default function Register() {
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Sign Up");
+    setError("");
+
+    if (!name.trim()) {
+      setError("Please enter your full name.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await register({
+        full_name: name,
+        phone,
+        email,
+        password,
+        password_confirmation: confirmPassword,
+      });
+      navigate("/login");
+    } catch (err) {
+      setError(err.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,6 +66,12 @@ export default function Register() {
         {/* Form */}
         <form onSubmit={handleSubmit}>
 
+          {error && (
+            <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-600">
+              {error}
+            </div>
+          )}
+
           {/* Full Name */}
           <div className="mb-4">
             <label className="block text-xs font-semibold text-gray-700 mb-1.5">
@@ -43,7 +86,47 @@ export default function Register() {
 
               <input
                 type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Jane Doe"
+                className="
+                w-full
+                h-11
+                rounded-md
+                bg-white
+                border border-gray-200
+                pl-10
+                pr-3
+                text-sm
+                outline-none
+                text-gray-700
+                focus:border-blue-700
+                focus:ring-2
+                focus:ring-blue-100
+              "
+              />
+            </div>
+          </div>
+
+          {/* Email Address */}
+          <div className="mb-4">
+            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+              Email Address
+            </label>
+
+            <div className="relative">
+              {/* Email Icon */}
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <i className="fa-regular fa-envelope"></i>
+              </span>
+
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="jane@example.com"
                 className="
                   w-full
                   h-11
@@ -63,21 +146,22 @@ export default function Register() {
             </div>
           </div>
 
-          {/* Email Address */}
+          {/* Phone */}
           <div className="mb-4">
             <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-              Email Address
+              Phone
             </label>
 
             <div className="relative">
-              {/* Email Icon */}
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                <i className="fa-regular fa-envelope"></i>
+                <i className="fa-solid fa-phone"></i>
               </span>
 
               <input
-                type="email"
-                placeholder="jane@example.com"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="012345678"
                 className="
                   w-full
                   h-11
@@ -112,6 +196,9 @@ export default function Register() {
               {/* Password Input */}
               <input
                 type={showPassword ? "text" : "password"}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="
                   w-full
@@ -163,6 +250,9 @@ export default function Register() {
               {/* Confirm Password Input */}
               <input
                 type={showConfirmPassword ? "text" : "password"}
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
                 className="
                   w-full
@@ -214,7 +304,7 @@ export default function Register() {
               transition
             "
           >
-            Sign Up
+{loading ? "Signing Up..." : "Sign Up"}
           </button>
 
         </form>
@@ -293,6 +383,7 @@ export default function Register() {
             Already have an account?
             <button
               type="button"
+              onClick={() => navigate("/login")}
               className="ml-1 text-blue-800 font-medium hover:underline"
             >
               Log in

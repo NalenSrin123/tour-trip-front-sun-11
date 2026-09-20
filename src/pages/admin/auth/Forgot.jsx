@@ -1,13 +1,30 @@
 import React, { useState } from 'react';
-import { Mail, RotateCcw, ArrowLeft } from 'lucide-react'; // ឬប្រើ react-icons/md, react-icons/fi
+import { useNavigate } from 'react-router-dom';
+import { Mail, RotateCcw, ArrowLeft } from 'lucide-react';
+import { forgotPassword } from '../../../services/authService';
 
 const Forgot = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // ដាក់ logic សម្រាប់ផ្ញើ reset link នៅទីនេះ
-    console.log('Sending reset link to:', email);
+    setError('');
+    setMessage('');
+    setLoading(true);
+
+    try {
+      await forgotPassword(email);
+      setMessage('Reset link sent! Check your email.');
+      setTimeout(() => navigate('/verify', { state: { email } }), 1500);
+    } catch (err) {
+      setError(err.message || 'Failed to send reset link. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,6 +46,16 @@ const Forgot = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="w-full text-left">
+          {error && (
+            <div className="mb-4 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-600">
+              {error}
+            </div>
+          )}
+          {message && (
+            <div className="mb-4 rounded-md bg-green-50 border border-green-200 px-3 py-2 text-xs text-green-700">
+              {message}
+            </div>
+          )}
           <label className="block text-xs font-semibold text-gray-500 tracking-wider mb-2 uppercase">
             EMAIL ADDRESS
           </label>
@@ -53,7 +80,7 @@ const Forgot = () => {
             type="submit"
             className="w-full py-3 bg-[#0d2a6b] hover:bg-[#081b47] text-white font-semibold text-xs tracking-wider uppercase rounded-lg shadow-md transition duration-200"
           >
-            SEND RESET LINK
+            {loading ? 'SENDING...' : 'SEND RESET LINK'}
           </button>
         </form>
 

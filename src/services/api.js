@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://tour-trip-sun-11.duckdns.org';
 
 /**
  * Basic wrapper around fetch for handling common API tasks
@@ -7,14 +7,12 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000
 export async function apiFetch(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
     
+    const token = localStorage.getItem('access_token');
     const headers = {
         'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         ...options.headers,
     };
-
-    // If you need to add an auth token later, you can do it here:
-    // const token = localStorage.getItem('token');
-    // if (token) headers['Authorization'] = `Bearer ${token}`;
 
     try {
         const response = await fetch(url, {
@@ -29,7 +27,8 @@ export async function apiFetch(endpoint, options = {}) {
         }
 
         if (!response.ok) {
-            throw new Error(data?.message || `API Error: ${response.status} ${response.statusText}`);
+            const fieldErrors = data?.errors ? Object.values(data.errors).flat() : [];
+            throw new Error(data?.message || fieldErrors[0] || `API Error: ${response.status} ${response.statusText}`);
         }
 
         return data;

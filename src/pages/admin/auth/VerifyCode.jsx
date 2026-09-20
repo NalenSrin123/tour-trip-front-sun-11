@@ -1,9 +1,16 @@
 import React, { useState, useRef } from 'react';
-import { Compass, ArrowRight, RotateCw } from 'lucide-react'; // ឬប្រើ react-icons
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Compass, ArrowRight, RotateCw } from 'lucide-react';
+import { verifyCode, forgotPassword } from '../../../services/authService';
 
 const VerifyCode = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [otp, setOtp] = useState(['', '', '', '']);
   const inputRefs = useRef([]);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const email = location.state?.email || 'explorer@example.com';
 
   // Handle ការវាយលេខចូល (Auto focus ទៅប្រអប់បន្ទាប់)
   const handleChange = (index, value) => {
@@ -26,10 +33,32 @@ const VerifyCode = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const verificationCode = otp.join('');
-    console.log('Submitted OTP:', verificationCode);
+    setError('');
+    setLoading(true);
+
+    try {
+      await verifyCode(email, verificationCode);
+      navigate('/login');
+    } catch (err) {
+      setError(err.message || 'Verification failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setError('');
+    setLoading(true);
+    try {
+      await forgotPassword(email);
+    } catch (err) {
+      setError(err.message || 'Failed to resend code. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,8 +86,14 @@ const VerifyCode = () => {
           We've sent a 4-digit code to your email. Enter it below to confirm your identity.
         </p>
         <span className="text-xs font-medium text-gray-700 block mb-6">
-          explorer@example.com
+          {email}
         </span>
+
+        {error && (
+          <div className="w-full mb-4 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-600 text-left">
+            {error}
+          </div>
+        )}
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
@@ -84,15 +119,17 @@ const VerifyCode = () => {
             type="submit"
             className="w-full py-3 bg-[#a33b1e] hover:bg-[#852e16] text-white font-medium text-sm rounded-lg shadow-md transition duration-200 flex items-center justify-center gap-2 mb-6"
           >
-            Verify Code <ArrowRight className="w-4 h-4" />
+            Verifying... <ArrowRight className="w-4 h-4" />
           </button>
         </form>
 
         {/* Resend Code */}
         <div className="text-xs text-gray-500">
           Didn't receive the code?
-          <button 
-            type="button" 
+          <button
+            type="button"
+            onClick={handleResend}
+            disabled={loading}
             className="mt-1 flex items-center justify-center gap-1 font-semibold text-[#1b3b80] hover:underline mx-auto transition"
           >
             <RotateCw className="w-3 h-3" /> Resend Code
