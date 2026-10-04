@@ -9,6 +9,7 @@ import AdminLayout from "./components/layout/AdminLayout";
 import ScheduleManagement from "./pages/ScheduleManagement";
 import CustomersPage from "./pages/admin/customers";
 import AddCustomer from "./pages/admin/customers/AddCustomer";
+import EditCustomer from "./pages/admin/customers/EditCustomer";
 import ToursPage from "./pages/admin/tours";
 import CreateTour from "./pages/admin/tours";
 import Login from "./pages/admin/auth/login";
@@ -103,6 +104,10 @@ function App() {
           <Route
             path="customers/add"
               element={<AddCustomer/>}
+          />
+          <Route
+            path="customers/edit/:id"
+              element={<EditCustomer/>}
           />
           
           <Route

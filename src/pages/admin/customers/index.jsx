@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchCustomers } from "../../../services/addCustomerService";
+import { deleteCustomer, fetchCustomers } from "../../../services/addCustomerService";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -110,6 +110,26 @@ export default function CustomersPage() {
       .map((n) => n[0])
       .join("")
       .toUpperCase();
+  };
+
+  const handleEdit = (id) => {
+    navigate(`/admin/customers/edit/${id}`);
+  };
+
+  const handleDelete = async (customer) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete ${customer.name}?`
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await deleteCustomer(customer.id);
+      setCustomers((previous) =>
+        previous.filter((item) => String(item.id) !== String(customer.id))
+      );
+    } catch (error) {
+      console.error("Failed to delete customer:", error);
+    }
   };
 
   return (
@@ -236,10 +256,21 @@ export default function CustomersPage() {
                     <td className="py-4 px-6 text-gray-500">{customer.joined}</td>
 
                     {/* Action Menu */}
-                    <td className="py-4 px-6 text-right">
-                      <button className="p-1 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
-                        <i className="bx bx-dots-horizontal-rounded text-xl"></i>
-                      </button>
+                    <td className="py-4 px-6">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => handleEdit(customer.id)}
+                          className="px-3 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(customer)}
+                          className="px-3 py-1 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))

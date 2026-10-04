@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://tour-trip-sun-11.duckdns.org';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://tour-trip-etec-sun-11.duckdns.org';
 
 /**
  * Basic wrapper around fetch for handling common API tasks

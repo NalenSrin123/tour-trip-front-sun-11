@@ -68,3 +68,49 @@ export const createCustomer = async (customerData) => {
 
   return newCustomer;
 };
+
+/**
+ * FAKE API: Fetch a single customer by id (GET /api/customers/:id)
+ */
+export const getCustomerById = async (id) => {
+  const currentList = getStoredCustomers();
+  return currentList.find((customer) => String(customer.id) === String(id)) || null;
+};
+
+/**
+ * FAKE API: Update an existing customer (PUT /api/customers/:id)
+ */
+export const updateCustomer = async (id, customerData) => {
+  const currentList = getStoredCustomers();
+
+  const updatedList = currentList.map((customer) =>
+    String(customer.id) === String(id)
+      ? { ...customer, ...customerData, id: customer.id }
+      : customer
+  );
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
+  window.dispatchEvent(new Event("customersUpdated"));
+
+  return updatedList.find((customer) => String(customer.id) === String(id));
+};
+
+/**
+ * FAKE API: Delete a customer (DELETE /api/customers/:id)
+ */
+export const deleteCustomer = async (id) => {
+  const currentList = getStoredCustomers();
+
+  const deletedCustomer = currentList.find(
+    (customer) => String(customer.id) === String(id)
+  );
+
+  const updatedList = currentList.filter(
+    (customer) => String(customer.id) !== String(id)
+  );
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
+  window.dispatchEvent(new Event("customersUpdated"));
+
+  return deletedCustomer;
+};
