@@ -3,7 +3,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
 } from "react-router-dom";
 import AdminLayout from "./components/layout/AdminLayout";
 import ScheduleManagement from "./pages/ScheduleManagement";
@@ -30,14 +29,20 @@ import EditCategoryPage from "./pages/admin/categories/EditCategoryPage";
 import AddCategoryPage from "./pages/admin/categories/AddCategoryPage";
 
 import DestinationsPage from "./pages/admin/destinations/DestinationsPage";
+import ProtectedRoute from "./components/guards/ProtectedRoute";
+import PublicRoute from "./components/guards/PublicRoute";
+import RoleRedirect from "./components/guards/RoleRedirect";
+import Home from "./pages/public/Home";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/redirect" element={<RoleRedirect />} />
 
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route element={<ProtectedRoute requireAdmin={true} />}>
+          <Route path="/admin" element={<AdminLayout />}>
           <Route
             path="dashboard"
             element={
@@ -149,11 +154,12 @@ function App() {
           
 
         </Route>
+        </Route>
 
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/register" element={<Register/>}/>
-        <Route path="/forget" element={<ForgetPassword/>}/>
-        <Route path="/verify" element={<VerifyCode/>}/>
+        <Route path="/login" element={<PublicRoute><Login/></PublicRoute>}/>
+        <Route path="/register" element={<PublicRoute><Register/></PublicRoute>}/>
+        <Route path="/forget" element={<PublicRoute><ForgetPassword/></PublicRoute>}/>
+        <Route path="/verify" element={<PublicRoute><VerifyCode/></PublicRoute>}/>
 
         
       </Routes>

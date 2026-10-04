@@ -13,6 +13,21 @@ export const getUser = () => {
   }
 };
 
+export const getUserRole = () => {
+  const user = getUser();
+  return user?.role_id || user?.role || null;
+};
+
+export const isAdmin = () => {
+  const role = getUserRole();
+  return role === 1 || role === "admin" || role === "Admin";
+};
+
+export const isCustomer = () => {
+  const role = getUserRole();
+  return role === 2 || role === "customer" || role === "Customer" || role === "user";
+};
+
 const setAuth = (data) => {
   if (data?.access_token) localStorage.setItem(TOKEN_KEY, data.access_token);
   if (data?.data) localStorage.setItem(USER_KEY, JSON.stringify(data.data));

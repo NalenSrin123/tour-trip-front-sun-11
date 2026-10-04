@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../../services/authService";
+import { login, isAdmin } from "../../../services/authService";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ export default function Login() {
 
     try {
       await login(email, password);
-      navigate("/admin/dashboard");
+      navigate(isAdmin() ? "/admin/dashboard" : "/");
     } catch (err) {
       setError(err.message || "Login failed. Please try again.");
     } finally {
